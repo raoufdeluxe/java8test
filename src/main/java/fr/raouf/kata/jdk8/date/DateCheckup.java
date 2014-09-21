@@ -3,6 +3,7 @@ package fr.raouf.kata.jdk8.date;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.TemporalAdjusters;
@@ -19,13 +20,14 @@ public class DateCheckup {
     }
 
     public Date jeudiProchain(Date input) {
-        LocalDate date = LocalDate.from(input.toInstant()).with(TemporalAdjusters.next(DayOfWeek.THURSDAY));
-        return LocalDate2Date.INSTANCE.apply(date);
+        ZonedDateTime date = ZonedDateTime.ofInstant(input.toInstant(), ZoneId.systemDefault()).with(TemporalAdjusters.next(DayOfWeek.THURSDAY));
+        return Date.from(date.toInstant());
     }
 
-    public String dateEnFrancais(Date input) {
-        DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendPattern("E d mu").toFormatter();
-        return formatter.format(input.toInstant());
+    public String dateEnFrancaisLitteraire(Date input) {
+        DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendPattern("EEEE d LLL u").toFormatter();
+        System.out.println(formatter);
+        return ZonedDateTime.ofInstant(input.toInstant(), ZoneId.systemDefault()).format(formatter);
     }
 
     private enum LocalDate2Date implements Function<LocalDate, Date> {

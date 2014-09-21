@@ -1,11 +1,12 @@
 package fr.raouf.kata.jdk8.date;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
@@ -13,7 +14,7 @@ public class DateCheckupTest {
 
     DateCheckup dateCheckup;
 
-    @BeforeClass
+    @Before
     public void init() {
         dateCheckup = new DateCheckup();
     }
@@ -21,21 +22,31 @@ public class DateCheckupTest {
     @Test
     public void should_return_a_date_from_day_mont_and_year() {
         // GIVEN
-        Instant expected = LocalDate.of(1981, 2, 17).atStartOfDay(ZoneId.systemDefault()).toInstant();
+        Instant expected = LocalDate.of(2007, 12, 27).atStartOfDay(ZoneId.systemDefault()).toInstant();
         // WHEN
-        Instant date = dateCheckup.instance(17, 2, 1981).toInstant();
-
+        Instant date = dateCheckup.instance(27, 12, 2007).toInstant();
         // THEN
         assertEquals(expected, date);
     }
 
     @Test
-    public void should_return_date_like_day_dd_mm_yyyy() {
-
+    public void should_return_string_like_day_dd_mm_yyyy() {
+        // GIVEN
+        String expected = "jeudi 27 12 2007";
+        // WHEN
+        String result = dateCheckup.dateEnFrancaisLitteraire(dateCheckup.instance(27, 12, 2007));
+        // THEN
+        assertEquals(expected, result);
     }
+
 
     @Test
     public void should_return_next_thursday() {
-
+        // GIVEN
+        Date expected = dateCheckup.instance(3, 1, 2008);
+        // WHEN
+        Date result = dateCheckup.jeudiProchain(dateCheckup.instance(27, 12, 2007));
+        // THEN
+        assertEquals(expected, result);
     }
 }
