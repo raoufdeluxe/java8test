@@ -19,15 +19,23 @@ public class DateCheckup {
         return LocalDate2Date.INSTANCE.apply(LocalDate.of(year, month, day));
     }
 
-    public Date jeudiProchain(Date input) {
-        ZonedDateTime date = ZonedDateTime.ofInstant(input.toInstant(), ZoneId.systemDefault()).with(TemporalAdjusters.next(DayOfWeek.THURSDAY));
-        return Date.from(date.toInstant());
-    }
-
     public String dateEnFrancaisLitteraire(Date input) {
         DateTimeFormatter formatter = new DateTimeFormatterBuilder().appendPattern("EEEE d LLL u").toFormatter();
         System.out.println(formatter);
         return ZonedDateTime.ofInstant(input.toInstant(), ZoneId.systemDefault()).format(formatter);
+    }
+
+    public Date jeudiProchain(Date input) {
+        return jourEn7(input, DayOfWeek.THURSDAY);
+    }
+
+    public Date jourEn7(Date input, DayOfWeek day) {
+        ZonedDateTime date = ZonedDateTime.ofInstant(input.toInstant(), ZoneId.systemDefault()).with(TemporalAdjusters.next(day));
+        return Date.from(date.toInstant());
+    }
+
+    public Date jourEn15(Date instance, DayOfWeek day) {
+        return jourEn7(jourEn7(instance,day),day);
     }
 
     private enum LocalDate2Date implements Function<LocalDate, Date> {

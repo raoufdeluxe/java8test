@@ -3,6 +3,7 @@ package fr.raouf.kata.jdk8.date;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -39,13 +40,32 @@ public class DateCheckupTest {
         assertEquals(expected, result);
     }
 
-
     @Test
     public void should_return_next_thursday() {
         // GIVEN
         Date expected = dateCheckup.instance(3, 1, 2008);
         // WHEN
         Date result = dateCheckup.jeudiProchain(dateCheckup.instance(27, 12, 2007));
+        // THEN
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void should_return_jour_en_7() {
+        // GIVEN
+        Date expected = dateCheckup.instance(3, 1, 2008);
+        // WHEN
+        Date result = dateCheckup.jourEn7(dateCheckup.instance(27, 12, 2007), DayOfWeek.THURSDAY);
+        // THEN
+        assertEquals(expected, result);
+    }
+
+    @Test
+    public void should_return_jour_en_15() {
+        // GIVEN
+        Date expected = dateCheckup.instance(9, 1, 2008);
+        // WHEN
+        Date result = dateCheckup.jourEn15(dateCheckup.instance(27, 12, 2007), DayOfWeek.WEDNESDAY);
         // THEN
         assertEquals(expected, result);
     }
